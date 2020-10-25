@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 //Hi Ethan
 @TeleOp(name="Mecanum Drive Example", group="Iterative Opmode")
@@ -15,20 +16,20 @@ public class Mecanum extends OpMode {
      */
 
     // declare and initialize four DcMotors.
-    private DcMotor front_left  = null;
-    private DcMotor front_right = null;
-    private DcMotor back_left   = null;
-    private DcMotor back_right  = null;
+    private DcMotor leftFront  = null;
+    private DcMotor leftRear = null;
+    private DcMotor rightRear   = null;
+    private DcMotor rightFront  = null;
 
     @Override
     public void init() {
 
         // Name strings must match up with the config on the Robot Controller
         // app.
-        front_left   = hardwareMap.get(DcMotor.class, "front_left");
-        front_right  = hardwareMap.get(DcMotor.class, "front_right");
-        back_left    = hardwareMap.get(DcMotor.class, "back_left");
-        back_right   = hardwareMap.get(DcMotor.class, "back_right");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
     }
 
     @Override
@@ -87,9 +88,9 @@ public class Mecanum extends OpMode {
         }
 
         // apply the calculated values to the motors.
-        front_left.setPower(speeds[0]);
-        front_right.setPower(speeds[1]);
-        back_left.setPower(speeds[2]);
-        back_right.setPower(speeds[3]);
+        leftFront.setPower(speeds[0]);
+        rightFront.setPower(speeds[1]);
+        leftRear.setPower(speeds[2]);
+        rightRear.setPower(speeds[3]);
     }
 }
