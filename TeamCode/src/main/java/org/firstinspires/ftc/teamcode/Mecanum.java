@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.*;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 //Hi Ethan
-@TeleOp(name="Mecanum Drive Example", group="Iterative Opmode")
+@TeleOp(name="Ultimate Goal Mecanum Drive", group="Iterative Opmode")
 public class Mecanum extends OpMode {
+    FtcDashboard dashboard = FtcDashboard.getInstance();
 
     /*
      * The mecanum drivetrain involves four separate motors that spin in
@@ -20,6 +23,7 @@ public class Mecanum extends OpMode {
     private DcMotor leftRear = null;
     private DcMotor rightRear   = null;
     private DcMotor rightFront  = null;
+    private DcMotor flyWheel  = null;
 
     @Override
     public void init() {
@@ -30,6 +34,7 @@ public class Mecanum extends OpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");
     }
 
     @Override
@@ -40,6 +45,7 @@ public class Mecanum extends OpMode {
         double drive  = gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
         double twist  = gamepad1.right_stick_x;
+        double flywheelSpeed  = gamepad1.left_trigger;
 
         /*
          * If we had a gyro and wanted to do field-oriented control, here
@@ -92,5 +98,20 @@ public class Mecanum extends OpMode {
         rightFront.setPower(speeds[1]);
         leftRear.setPower(speeds[2]);
         rightRear.setPower(speeds[3]);
+        flyWheel.setPower(flywheelSpeed);
+
+        //Telemetry for FTC
+        telemetry.addData("Drive: ", drive);
+        telemetry.addData("Twist: ", twist);
+        telemetry.addData("Strafe: ", strafe);
+        telemetry.addData("Flywheel: ", flywheelSpeed);
+        telemetry.update();
+
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("Drive: ", drive);
+        packet.put("Twist: ", twist);
+        packet.put("Strafe: ", strafe);
+        packet.put("Flywheel: ", flywheelSpeed);
+        dashboard.sendTelemetryPacket(packet);
     }
 }
