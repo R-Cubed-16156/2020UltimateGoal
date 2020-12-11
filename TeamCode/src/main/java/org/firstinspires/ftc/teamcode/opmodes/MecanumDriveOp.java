@@ -15,7 +15,7 @@ import static org.firstinspires.ftc.teamcode.breakout.BreakoutMotor.Direction.MO
 /**
  * This class is used for the main game to drive the robot using the controllers.
  **/
-@TeleOp(name = "Mecanum", group = "Pushbot")
+@TeleOp(name = "TeleOp 2020 v1", group = "Pushbot")
 
 public class MecanumDriveOp extends OpMode {
 
@@ -27,9 +27,9 @@ public class MecanumDriveOp extends OpMode {
     private Mecanum drive;
     private boolean slow = false;
     private boolean claw = false;
-    private boolean tabs = true;
+    private boolean pushBar = true;
     private double clawTimer = 0;
-    private double tabTimer = 0;
+    private double pushBarTimer = 0;
     private double slowTimer = 0;
 
     @Override
@@ -104,10 +104,10 @@ public class MecanumDriveOp extends OpMode {
 //            }
         }
 
-        if (aButton && timer.milliseconds() - tabTimer > 250) {
-            tabs = !tabs;
-            robot.setTabs(tabs);
-            tabTimer = timer.milliseconds();
+        if (aButton && timer.milliseconds() - pushBarTimer > 250) {
+            pushBar = !pushBar;
+            robot.setPushBar(pushBar);
+            pushBarTimer = timer.milliseconds();
         }
 
         if (yButton && timer.milliseconds() - clawTimer > 250) {
@@ -124,7 +124,6 @@ public class MecanumDriveOp extends OpMode {
         robot.setWheelIntake(leftTrigger2-rightTrigger2);
 
         //Arm
-        robot.moveArm(leftStick2y);
 
         //Telemetry
         telemetry.addData("FL", output[0]);

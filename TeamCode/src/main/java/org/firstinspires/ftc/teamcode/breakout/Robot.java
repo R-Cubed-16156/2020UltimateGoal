@@ -35,13 +35,12 @@ public class Robot {
     /**
      * Enum for the pull tabs' positions, open and closed for each side.
      */
-    public enum TabPos {
-        LEFT_OPEN(1.0d), LEFT_CLOSED(0.56d),
-        RIGHT_OPEN(0.08d), RIGHT_CLOSED(0.52d);
+    public enum PushBarPos {
+        OUT(0.08d), IN(0.52d);
 
         private double pos;
 
-        TabPos(double pos) { this.pos = pos; }
+       PushBarPos(double pos) { this.pos = pos; }
     }
 
     //Motors
@@ -49,13 +48,11 @@ public class Robot {
     private BreakoutMotor frontRight = new BreakoutMotor();
     private BreakoutMotor backLeft = new BreakoutMotor();
     private BreakoutMotor backRight = new BreakoutMotor();
-    private BreakoutMotor wheelIntakeLeft = new BreakoutMotor();
-    private BreakoutMotor wheelIntakeRight = new BreakoutMotor();
-    private BreakoutMotor arm = new BreakoutMotor();
+    private BreakoutMotor wheelIntake = new BreakoutMotor();
+    private BreakoutMotor flyWheel = new BreakoutMotor();
 
     //Servos
-    private BreakoutServo tabLeft = new BreakoutServo();
-    private BreakoutServo tabRight = new BreakoutServo();
+    private BreakoutServo pushBar = new BreakoutServo();
     private BreakoutServo claw = new BreakoutServo();
 
     //Gyro
@@ -76,8 +73,7 @@ public class Robot {
      * @param power Float from -1 to 1 indicating how fast the motor moves.
      */
     public void setWheelIntake(float power) {
-        wheelIntakeLeft.setPower(-power);
-        wheelIntakeRight.setPower(power);
+        wheelIntake.setPower(-power);
     }
 
     /**
@@ -85,13 +81,11 @@ public class Robot {
      *
      * @param open Boolean variable to open/close the tabs.
      */
-    public void setTabs(boolean open) {
+    public void setPushBar(boolean open) {
         if (open) {
-            tabLeft.setPosition(TabPos.LEFT_OPEN.pos);
-            tabRight.setPosition(TabPos.RIGHT_OPEN.pos);
+            pushBar.setPosition(PushBarPos.IN.pos);
         } else {
-            tabLeft.setPosition(TabPos.LEFT_CLOSED.pos);
-            tabRight.setPosition(TabPos.RIGHT_CLOSED.pos);
+            pushBar.setPosition(PushBarPos.OUT.pos);
         }
     }
 
@@ -122,27 +116,14 @@ public class Robot {
      *
      * @param power Float from -1 to 1 to set how fast the motor moves.
      */
-    @Deprecated
-    public void setArmPower(float power) {
-        arm.setPower(power);
-    }
+
 
     /**
      * Same effect as setArmPower but also uses encoders to help keep it more accurate.
      *
      * @param power Power of the motor from -1 to 1.
      */
-    public void moveArm(float power) {
-        int currentPosition = arm.getCurrentPosition();
-        int target = currentPosition + (int)(power*52);
-        arm.setTargetPosition(target);
-        arm.setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (target < currentPosition) {
-            arm.setPower(-1);
-        } else {
-            arm.setPower(1);
-        }
-    }
+
 
     /**
      * Method to set the power of the {@link Motor} you pass in to the given power float.
@@ -294,7 +275,7 @@ public class Robot {
         this.hardwareMap = hardwareMap;
 
         // Gyro init
-        gyro.set(hardwareMap.get(gyro.IMU, "gyroA"));
+        gyro.set(hardwareMap.get(gyro.IMU, "imu 1"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         telemetry.update();
         gyro.calibrate();
@@ -302,32 +283,29 @@ public class Robot {
         telemetry.update();
 
         // Define and Initialize Motors
-        frontLeft.set(hardwareMap.dcMotor.get("frontLeft"));
-        frontRight.set(hardwareMap.dcMotor.get("frontRight"));
-        backLeft.set(hardwareMap.dcMotor.get("backLeft"));
-        backRight.set(hardwareMap.dcMotor.get("backRight"));
+        frontLeft.set(hardwareMap.dcMotor.get("leftFront"));
+        frontRight.set(hardwareMap.dcMotor.get("rightFront"));
+        backLeft.set(hardwareMap.dcMotor.get("leftRear"));
+        backRight.set(hardwareMap.dcMotor.get("rightRear"));
 
-        wheelIntakeLeft.set(hardwareMap.dcMotor.get("leftIntake"));
-        wheelIntakeRight.set(hardwareMap.dcMotor.get("rightIntake"));
+        wheelIntake.set(hardwareMap.dcMotor.get("wheelIntake"));
+        flyWheel.set(hardwareMap.dcMotor.get("flyWheel"));
 
-        tabLeft.set(hardwareMap.servo.get("tabLeft"));
-        tabRight.set(hardwareMap.servo.get("tabRight"));
+        pushBar.set(hardwareMap.servo.get("pushBar"));
 
-        arm.set(hardwareMap.dcMotor.get("arm"));
         claw.set(hardwareMap.servo.get("claw"));
 
         //Set directions for motors
         //F = Clockwise while looking at axle
         //R = Counter clockwise while looking at axle
-        frontLeft.setDirection(MOTOR_R);
+        frontLeft.setDirection(MOTOR_F);
         frontRight.setDirection(MOTOR_F);
-        backLeft.setDirection(MOTOR_R);
+        backLeft.setDirection(MOTOR_F);
         backRight.setDirection(MOTOR_F);
 
-        wheelIntakeLeft.setDirection(MOTOR_F);
-        wheelIntakeRight.setDirection(MOTOR_R);
+        wheelIntake.setDirection(MOTOR_F);
+        flyWheel.setDirection(MOTOR_F);
 
-        arm.setDirection(MOTOR_F);
 
         // Set all motors to zero power
         frontLeft.setPower(0);
@@ -335,13 +313,11 @@ public class Robot {
         backLeft.setPower(0);
         backRight.setPower(0);
 
-        wheelIntakeLeft.setPower(0);
-        wheelIntakeRight.setPower(0);
+        wheelIntake.setPower(0);
+        flyWheel.setPower(0);
 
-        tabLeft.setPosition(TabPos.LEFT_OPEN.pos);
-        tabRight.setPosition(TabPos.RIGHT_OPEN.pos);
+        pushBar.setPosition(PushBarPos.OUT.pos);
 
-        arm.setPower(0);
         claw.setPosition(ClawPos.OPEN.pos);
 
         // Set all motors to run without encoders.
@@ -351,10 +327,8 @@ public class Robot {
         backLeft.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        wheelIntakeLeft.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelIntakeRight.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelIntake.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flyWheel.setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        arm.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 }

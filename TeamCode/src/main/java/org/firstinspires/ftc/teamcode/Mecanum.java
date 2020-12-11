@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-//Hi Ethan
+//Hi Peter
 @TeleOp(name="Ultimate Goal Mecanum Drive", group="Iterative Opmode")
 public class Mecanum extends OpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
