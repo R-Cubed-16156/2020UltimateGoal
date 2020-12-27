@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,6 +20,8 @@ import static org.firstinspires.ftc.teamcode.breakout.BreakoutMotor.Direction.MO
 @TeleOp(name = "TeleOp 2020 v1", group = "Pushbot")
 
 public class MecanumDriveOp extends OpMode {
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private static final String NAME = "Mecanum Drive Op";
 
@@ -58,11 +62,11 @@ public class MecanumDriveOp extends OpMode {
 
         //Gamepad 1
         float leftStick1x = gamepad1.left_stick_x;
-        float leftStick1y = -gamepad1.left_stick_y;
+        float leftStick1y = gamepad1.left_stick_y;
         float rightStick1x = gamepad1.right_stick_x;
-        float rightStick1y = -gamepad1.right_stick_y;
-        float leftTrigger1 = gamepad1.left_trigger;
-        float rightTrigger1 = gamepad1.right_trigger;
+        float rightStick1y = gamepad1.right_stick_y;
+        float leftTrigger1 = -gamepad1.left_trigger;
+        float rightTrigger1 = -gamepad1.right_trigger;
         //Gamepad 2
         float leftStick2x = gamepad2.left_stick_x;
         float leftStick2y = -gamepad2.left_stick_y;
@@ -136,6 +140,20 @@ public class MecanumDriveOp extends OpMode {
         telemetry.addData("BR Power Float", robot.getPower(Robot.Motor.BACK_RIGHT));
         telemetry.addData("Claw Pos", robot.getClawPos());
         telemetry.addData("slow?", slow);
+/*
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("FL", output[0]);
+        packet.put("FR", output[1]);
+        packet.put("BL", output[2]);
+        packet.put("BR", output[3]);
+        packet.put("FL Power Float", robot.getPower(Robot.Motor.FRONT_LEFT);
+        packet.put("FR Power Float", robot.getPower(Robot.Motor.FRONT_RIGHT);
+        packet.put("BL Power Float", robot.getPower(Robot.Motor.BACK_LEFT);
+        packet.put("BR Power Float", robot.getPower(Robot.Motor.BACK_RIGHT);
+        packet.put("Claw Pos", robot.getClawPos());
+        packet.put("slow?", slow);
+        dashboard.sendTelemetryPacket(packet);
+*/
     }
 
     @Override

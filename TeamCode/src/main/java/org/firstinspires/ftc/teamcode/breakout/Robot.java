@@ -36,7 +36,7 @@ public class Robot {
      * Enum for the pull tabs' positions, open and closed for each side.
      */
     public enum PushBarPos {
-        OUT(0.08d), IN(0.52d);
+        OUT(-0.5d), IN(0.5d);
 
         private double pos;
 
