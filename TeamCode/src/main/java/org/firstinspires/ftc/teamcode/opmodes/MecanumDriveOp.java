@@ -133,6 +133,12 @@ public class MecanumDriveOp extends OpMode {
         if (!rightBumper2 && leftBumper2) {
             robot.setFlyWheel(1);
         }
+        if (!rightBumper2 && !leftBumper2) {
+            robot.setFlyWheel(0);
+        }
+        if (rightBumper2 && leftBumper2) {
+            robot.setFlyWheel(0);
+        }
 
         robot.setWheelIntake(leftTrigger2-rightTrigger2);
 
