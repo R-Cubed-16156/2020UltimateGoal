@@ -76,6 +76,10 @@ public class Robot {
         wheelIntake.setPower(-power);
     }
 
+    public void setFlyWheel(float power) {
+        flyWheel.setPower(power);
+    }
+
     /**
      * Sets the tab position based on the boolean input.
      *

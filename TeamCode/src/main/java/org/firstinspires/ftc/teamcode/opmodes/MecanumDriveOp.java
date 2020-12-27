@@ -74,6 +74,8 @@ public class MecanumDriveOp extends OpMode {
         float rightStick2y = -gamepad2.right_stick_y;
         float leftTrigger2 = gamepad2.left_trigger;
         float rightTrigger2 = gamepad2.right_trigger;
+        boolean leftBumper2 = gamepad2.left_bumper;
+        boolean rightBumper2 = gamepad2.right_bumper;
         boolean aButton = gamepad2.a;
         boolean bButton = gamepad2.b;
         boolean xButton = gamepad2.x;
@@ -125,7 +127,16 @@ public class MecanumDriveOp extends OpMode {
             slowTimer = timer.milliseconds();
         }
 
+        if (rightBumper2 && !leftBumper2) {
+            robot.setFlyWheel(-1);
+        }
+        if (!rightBumper2 && leftBumper2) {
+            robot.setFlyWheel(1);
+        }
+
         robot.setWheelIntake(leftTrigger2-rightTrigger2);
+
+
 
         //Arm
 
