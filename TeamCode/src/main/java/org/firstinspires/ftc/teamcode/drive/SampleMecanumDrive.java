@@ -36,6 +36,7 @@ import org.firstinspires.ftc.teamcode.util.AxesSigns;
 import org.firstinspires.ftc.teamcode.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+import org.openftc.revextensions2.ExpansionHubMotor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,10 +133,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         // upward (normal to the floor) using a command like the following:
         //BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = (ExpansionHubMotor) hardwareMap.get("leftFront");
+        leftRear = (ExpansionHubMotor) hardwareMap.get("leftRear");
+        rightRear = (ExpansionHubMotor) hardwareMap.get( "rightRear");
+        rightFront = (ExpansionHubMotor) hardwareMap.get("rightFront");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
