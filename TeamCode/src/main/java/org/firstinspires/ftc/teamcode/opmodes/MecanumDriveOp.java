@@ -92,7 +92,7 @@ public class MecanumDriveOp extends OpMode {
                 } else {
                     turnPower = 0;
                 }
-                output = drive.setPower(rightStick1x/2, rightStick1y/2, -turnPower/2);
+                output = drive.setPower(leftStick1x/2, leftStick1y/2, -turnPower/2);
 //            } else {
 //                output = drive.setPower(0, 0, 0);
 //            }
@@ -104,7 +104,7 @@ public class MecanumDriveOp extends OpMode {
                 } else {
                     turnPower = 0;
                 }
-                output = drive.setPower(rightStick1x, rightStick1y, turnPower);
+                output = drive.setPower(leftStick1x, leftStick1y, turnPower);
 //            } else {
 //                output = drive.setPower(0, 0, 0);
 //            }
